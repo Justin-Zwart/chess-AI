@@ -1,1 +1,3 @@
-print("Hello world")
+from minmax import minmax
+
+minimax()
