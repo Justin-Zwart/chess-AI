@@ -20,7 +20,19 @@ def minmax(depth, max_to_play, board):
         return static_evaluation(board)
 
     if max_to_play:
-        pass
+        for i in board.legal_moves:
+            max_eval = -100000
+            new_eval = minmax(depth - 1, False, board.push(i)) > max_eval
+            
+            if max_eval < new_eval:
+                max_eval = new_eval
+            
     else:
-        pass
+        for i in board.legal_moves:
+            max_eval = -100000
+            new_eval = minmax(depth - 1, True, board.push(i)) > max_eval
+            
+            if max_eval < new_eval:
+                max_eval = new_eval
     return 
+
