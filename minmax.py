@@ -15,24 +15,27 @@ def outcome_achieved(board):
     return False
 
 
-def minmax(depth, max_to_play, board):
+def minmax(depth, max_to_play, board, alpha, beta):
     if depth == 0 or outcome_achieved(board):
         return static_evaluation(board)
 
     if max_to_play:
+        max_eval = -100000
         for i in board.legal_moves:
-            max_eval = -100000
-            new_eval = minmax(depth - 1, False, board.push(i)) > max_eval
-            
-            if max_eval < new_eval:
-                max_eval = new_eval
-            
+            max_eval = max(max_eval, minmax(depth - 1, False, board.push(i), alpha, beta))
+            alpha = max(alpha, max_eval)
+            if alpha >= beta:
+                break
+
+        return max_eval
+
     else:
+        min_eval = 100000
         for i in board.legal_moves:
-            max_eval = -100000
-            new_eval = minmax(depth - 1, True, board.push(i)) > max_eval
-            
-            if max_eval < new_eval:
-                max_eval = new_eval
-    return 
+            min_eval = min(min_eval, minmax(depth - 1, True, board.push(i), alpha, beta))
+            beta = min(beta, min_eval)
+            if alpha >= beta:
+                break
+    
+        return min_eval
 
