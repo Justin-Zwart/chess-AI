@@ -1,4 +1,3 @@
-
 from minmax import minmax
 import chess
 
