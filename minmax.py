@@ -1,4 +1,5 @@
 from static_evaluation import static_evaluation
+from board_update import board_update
 import chess
 
 
@@ -19,12 +20,12 @@ def outcome_achieved(board):
 # recursively check for best moves
 def minmax(depth, max_to_play, board_san, board_fen, alpha, beta):
     if depth == 0 or outcome_achieved(board_san):
-        return static_evaluation(board_san, board_fen)
+        return static_evaluation(board_fen)
 
     if max_to_play:
         max_eval = -100000
         for i in board_san.legal_moves:
-            max_eval = max(max_eval, minmax(depth - 1, False, board.push(i), alpha, beta)[0])
+            max_eval = max(max_eval, minmax(depth - 1, False, board_san.push(i), board_update(board_san, board_fen, i), alpha, beta)[0])
             alpha = max(alpha, max_eval)
             if alpha >= beta:
                 break
@@ -34,7 +35,7 @@ def minmax(depth, max_to_play, board_san, board_fen, alpha, beta):
     else:
         min_eval = 100000
         for i in board_san.legal_moves:
-            min_eval = min(min_eval, minmax(depth - 1, True, board.push(i), alpha, beta)[0])
+            min_eval = min(min_eval, minmax(depth - 1, True, board_san.push(i), board_update(board_san, board_fen, i), alpha, beta)[0])
             beta = min(beta, min_eval)
             if alpha >= beta:
                 break
